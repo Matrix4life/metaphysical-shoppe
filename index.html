@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Trippy Hippie Shoppe | Shop + Book Readings</title>
+  <meta name="description" content="A metaphysical shop offering mystical goods and spiritual readings. Shop the collection or book an appointment." />
+  <style>
+    :root{
+      --bg:#070711;
+      --panel:#0f1020;
+      --panel2:#11132a;
+      --text:#e9e7ff;
+      --muted:#b7b1ffcc;
+      --line:#2a2c55;
+      --accent:#a78bfa;
+      --accent2:#22d3ee;
+      --good:#34d399;
+      --warn:#fbbf24;
+      --bad:#fb7185;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 1140px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--font);
+      background: radial-gradient(1000px 600px at 20% 10%, rgba(167,139,250,.25), transparent 60%),
+                  radial-gradient(900px 700px at 90% 20%, rgba(34,211,238,.18), transparent 60%),
+                  radial-gradient(800px 600px at 50% 110%, rgba(251,113,133,.14), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:22px;}
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(7,7,17,.85), rgba(7,7,17,.55));
+      border-bottom:1px solid rgba(42,44,85,.55);
+    }
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      max-width:var(--max); margin:0 auto; padding:16px 22px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; text-decoration:none;
+    }
+    .sigil{
+      width:38px; height:38px; border-radius:12px;
+      background: conic-gradient(from 210deg, rgba(167,139,250,.95), rgba(34,211,238,.85), rgba(251,113,133,.8), rgba(167,139,250,.95));
+      box-shadow: 0 0 0 2px rgba(255,255,255,.06), 0 10px 30px rgba(167,139,250,.18);
+      position:relative;
+      overflow:hidden;
+    }
+    .sigil::after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.22), transparent 55%);
+      transform: rotate(22deg);
+    }
+    .brand h1{
+      font-size:15px; line-height:1.1; margin:0; font-weight:800; letter-spacing:.6px;
+      text-transform:uppercase;
+    }
+    .brand .sub{display:block; margin-top:4px; font-size:12px; color:var(--muted); font-weight:600; letter-spacing:.2px; text-transform:none;}
+    .nav{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .btn{
+      appearance:none; border:1px solid rgba(42,44,85,.8);
+      background: rgba(15,16,32,.6);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:13px;
+      transition: transform .12s ease, border-color .15s ease, background .15s ease;
+      display:inline-flex; gap:8px; align-items:center;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(167,139,250,.8); background: rgba(15,16,32,.9);}
+    .btn.primary{border-color: rgba(167,139,250,.9); background: rgba(167,139,250,.18);}
+    .btn.cyan{border-color: rgba(34,211,238,.85); background: rgba(34,211,238,.14);}
+    .pill{
+      font-size:12px; padding:2px 8px; border-radius:999px;
+      border:1px solid rgba(42,44,85,.8); color:var(--muted);
+    }
+    main{padding:18px 0 60px;}
+    .hero{
+      border:1px solid rgba(42,44,85,.65);
+      border-radius: var(--radius2);
+      background: linear-gradient(180deg, rgba(17,19,42,.78), rgba(15,16,32,.6));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: radial-gradient(700px 320px at 18% 22%, rgba(167,139,250,.22), transparent 60%),
+                  radial-gradient(700px 320px at 82% 25%, rgba(34,211,238,.18), transparent 60%);
+      pointer-events:none;
+    }
+    .hero-inner{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+      padding:26px;
+      align-items:stretch;
+    }
+    @media (max-width: 920px){
+      .hero-inner{grid-template-columns: 1fr; padding:18px;}
+      .nav{gap:8px;}
+    }
+    .hero h2{margin:0; font-size:34px; letter-spacing:-.6px;}
+    .hero p{color:var(--muted); margin:10px 0 0; line-height:1.55; font-weight:600;}
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:14px;
+      margin-top:18px;
+    }
+    @media (max-width: 720px){ .cards{grid-template-columns:1fr;} }
+    .card{
+      border:1px solid rgba(42,44,85,.65);
+      background: rgba(15,16,32,.65);
+      border-radius: var(--radius);
+      padding:16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.35);
+      position:relative;
+      overflow:hidden;
+    }
+    .card::after{
+      content:"";
+      position:absolute; right:-80px; top:-80px; width:220px; height:220px;
+      background: radial-gradient(circle at 30% 30%, rgba(167,139,250,.25), transparent 55%);
+      transform: rotate(25deg);
+      pointer-events:none;
+    }
+    .card h3{margin:0 0 6px; font-size:18px;}
+    .card p{margin:0 0 12px; color:var(--muted); line-height:1.5; font-weight:600;}
+    .grid2{
+      display:grid; grid-template-columns: 1fr 1fr; gap:12px;
+    }
+    @media (max-width: 920px){ .grid2{grid-template-columns:1fr;} }
+    .section{
+      margin-top:18px;
+      border:1px solid rgba(42,44,85,.65);
+      border-radius: var(--radius2);
+      background: rgba(15,16,32,.55);
+      padding:18px;
+      box-shadow: 0 14px 50px rgba(0,0,0,.32);
+    }
+    .section-head{
+      display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .section h2{margin:0; font-size:22px;}
+    .muted{color:var(--muted); font-weight:600; line-height:1.5; margin:6px 0 0;}
+    .tabs{display:flex; gap:8px; flex-wrap:wrap;}
+    .tab{
+      border:1px solid rgba(42,44,85,.75);
+      background: rgba(17,19,42,.65);
+      padding:9px 11px; border-radius:12px;
+      cursor:pointer; font-weight:800; font-size:13px;
+      color:var(--muted);
+    }
+    .tab.active{border-color: rgba(167,139,250,.9); color:var(--text); background: rgba(167,139,250,.14);}
+    .shop-grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width: 980px){ .shop-grid{grid-template-columns: repeat(2,minmax(0,1fr));} }
+    @media (max-width: 620px){ .shop-grid{grid-template-columns: 1fr;} }
+    .product{
+      border:1px solid rgba(42,44,85,.65);
+      background: rgba(17,19,42,.55);
+      border-radius: var(--radius);
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .thumb{
+      height:140px;
+      border-radius: 14px;
+      border:1px dashed rgba(42,44,85,.9);
+      background:
+        radial-gradient(120px 60px at 30% 35%, rgba(167,139,250,.22), transparent 55%),
+        radial-gradient(140px 80px at 70% 45%, rgba(34,211,238,.18), transparent 55%),
+        rgba(7,7,17,.55);
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(233,231,255,.75);
+      font-weight:900;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      font-size:12px;
+    }
+    .product h4{margin:0; font-size:16px;}
+    .row{display:flex; justify-content:space-between; align-items:center; gap:10px;}
+    .price{font-weight:900;}
+    .small{font-size:12px; color:var(--muted); font-weight:650; line-height:1.45;}
+    .cart{
+      border:1px solid rgba(42,44,85,.65);
+      background: rgba(17,19,42,.55);
+      border-radius: var(--radius);
+      padding:14px;
+      margin-top:12px;
+    }
+    .cart h3{margin:0 0 10px;}
+    .cart-items{display:flex; flex-direction:column; gap:8px;}
+    .cart-item{
+      display:flex; justify-content:space-between; gap:10px; align-items:flex-start;
+      padding:10px; border-radius:14px;
+      border:1px solid rgba(42,44,85,.55);
+      background: rgba(7,7,17,.35);
+    }
+    .qty{display:flex; gap:8px; align-items:center;}
+    .iconbtn{
+      width:30px; height:30px; border-radius:10px;
+      border:1px solid rgba(42,44,85,.75);
+      background: rgba(15,16,32,.6);
+      color:var(--text);
+      cursor:pointer;
+      font-weight:900;
+    }
+    .iconbtn:hover{border-color: rgba(34,211,238,.9);}
+    .total{display:flex; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px solid rgba(42,44,85,.65); font-weight:900;}
+    .form{
+      display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:12px;
+    }
+    @media (max-width: 720px){ .form{grid-template-columns:1fr;} }
+    label{display:block; font-size:12px; color:var(--muted); font-weight:800; margin:0 0 6px;}
+    input, select, textarea{
+      width:100%;
+      padding:11px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(42,44,85,.8);
+      background: rgba(7,7,17,.55);
+      color: var(--text);
+      font-weight:650;
+      outline:none;
+    }
+    textarea{min-height: 96px; resize: vertical;}
+    .note{
+      margin-top:10px;
+      padding:12px;
+      border-radius: 14px;
+      border:1px solid rgba(42,44,85,.65);
+      background: rgba(167,139,250,.08);
+      color: var(--muted);
+      font-weight:650;
+      line-height:1.5;
+    }
+    .success{
+      border-color: rgba(52,211,153,.65);
+      background: rgba(52,211,153,.10);
+      color: rgba(233,231,255,.95);
+    }
+    footer{
+      margin-top:22px;
+      color:rgba(183,177,255,.75);
+      font-weight:650;
+      font-size:12px;
+      text-align:center;
+      padding:22px 0 10px;
+    }
+    .hidden{display:none !important;}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="topbar">
+    <a class="brand" href="#/" aria-label="Home">
+      <div class="sigil"></div>
+      <div>
+        <h1>Trippy Hippie Shoppe <span class="pill" id="routePill">Home</span></h1>
+        <span class="sub">Mystical goods • Tarot & intuitive readings</span>
+      </div>
+    </a>
+    <nav class="nav">
+      <button class="btn" id="navHome">Home</button>
+      <button class="btn primary" id="navShop">Shop</button>
+      <button class="btn cyan" id="navBook">Book Readings</button>
+      <button class="btn" id="navCart">Cart <span class="pill" id="cartCount">0</span></button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HOME (Front Page: 2 options) -->
+  <section id="viewHome" class="hero">
+    <div class="hero-inner">
+      <div>
+        <h2>Choose your path.</h2>
+        <p>
+          Shop curated metaphysical goods, or book a reading. Each experience is its own self-contained page,
+          so visitors always know exactly where they are.
+        </p>
+
+        <div class="cards">
+          <div class="card">
+            <h3>🛍️ Enter the Shop</h3>
+            <p>Tarot decks, candles, tees, ritual tools, and dark humor magic.</p>
+            <button class="btn primary" onclick="go('#/shop')">Go to Shop</button>
+          </div>
+
+          <div class="card">
+            <h3>🔮 Book a Reading</h3>
+            <p>Tarot, intuitive guidance, aura audits, and focused clarity sessions.</p>
+            <button class="btn cyan" onclick="go('#/book')">Book a Reading</button>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:14px;">
+          Tip: You can publish this for free on GitHub Pages or Netlify. Later, connect checkout to Stripe/Shopify,
+          and connect bookings to Calendly/Google Calendar without changing your layout.
+        </div>
+      </div>
+
+      <div class="card" style="min-height:260px;">
+        <h3>Today’s energy</h3>
+        <p>
+          Quiet confidence. Boundaries. Your intuition is a tool — not a mood.
+          This is a demo block you can replace with your own copy.
+        </p>
+        <div class="note" style="background: rgba(34,211,238,.08);">
+          Want a “New Arrivals” banner, email capture, or a TikTok funnel section? Add it here.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOP -->
+  <section id="viewShop" class="section hidden">
+    <div class="section-head">
+      <div>
+        <h2>Shop</h2>
+        <p class="muted">Browse items, add to cart, and checkout (placeholder link you can replace).</p>
+      </div>
+      <div class="tabs" aria-label="Shop categories">
+        <button class="tab active" data-cat="all">All</button>
+        <button class="tab" data-cat="tarot">Tarot</button>
+        <button class="tab" data-cat="candles">Candles</button>
+        <button class="tab" data-cat="apparel">Apparel</button>
+        <button class="tab" data-cat="ritual">Ritual</button>
+      </div>
+    </div>
+
+    <div class="shop-grid" id="productGrid"></div>
+
+    <div class="grid2">
+      <div class="cart" id="cartPanel">
+        <h3>Cart</h3>
+        <div id="cartEmpty" class="muted">Your cart is empty.</div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="total hidden" id="cartTotalRow">
+          <span>Total</span>
+          <span id="cartTotal">$0.00</span>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+          <button class="btn" onclick="clearCart()">Clear</button>
+          <button class="btn primary" onclick="checkout()">Checkout</button>
+        </div>
+        <div class="note" style="margin-top:12px;">
+          Checkout is a placeholder right now. Replace the checkout link inside the <b>checkout()</b> function
+          with a Stripe Payment Link / Shopify Buy Button / Etsy listing / Square checkout.
+        </div>
+      </div>
+
+      <div class="cart">
+        <h3>Policies</h3>
+        <div class="small">
+          <b>Shipping:</b> 2–5 business days processing for physical items. <br/><br/>
+          <b>Returns:</b> Returns accepted on unused items within 14 days (exclude digital). <br/><br/>
+          <b>Disclaimer:</b> Readings are for guidance and entertainment and do not replace professional services.
+        </div>
+        <div class="note" style="margin-top:12px;">
+          Replace this text with your own policy. You can also add a “Digital Products” category here.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING -->
+  <section id="viewBook" class="section hidden">
+    <div class="section-head">
+      <div>
+        <h2>Book a Reading</h2>
+        <p class="muted">Choose a service, pick a date/time, and submit your request.</p>
+      </div>
+      <div class="tabs" aria-label="Booking tabs">
+        <button class="tab active" data-booktab="services">Services</button>
+        <button class="tab" data-booktab="request">Request Appointment</button>
+      </div>
+    </div>
+
+    <div id="bookTabServices">
+      <div class="shop-grid" style="grid-template-columns: repeat(3, minmax(0,1fr));">
+        <div class="product">
+          <div class="thumb">Tarot</div>
+          <h4>Tarot Clarity Session</h4>
+          <div class="row">
+            <span class="small">30 minutes</span>
+            <span class="price">$45</span>
+          </div>
+          <p class="small">Focused guidance on a specific situation. Practical + intuitive.</p>
+          <button class="btn cyan" onclick="prefillService('Tarot Clarity Session', 45, 30)">Select</button>
+        </div>
+
+        <div class="product">
+          <div class="thumb">Intuitive</div>
+          <h4>Deep Dive Reading</h4>
+          <div class="row">
+            <span class="small">60 minutes</span>
+            <span class="price">$85</span>
+          </div>
+          <p class="small">Full energy scan + detailed insight, patterns, and next steps.</p>
+          <button class="btn cyan" onclick="prefillService('Deep Dive Reading', 85, 60)">Select</button>
+        </div>
+
+        <div class="product">
+          <div class="thumb">Aura</div>
+          <h4>Instant Aura Audit</h4>
+          <div class="row">
+            <span class="small">10 minutes</span>
+            <span class="price">$20</span>
+          </div>
+          <p class="small">Quick read on your current energy + a simple reset action.</p>
+          <button class="btn cyan" onclick="prefillService('Instant Aura Audit', 20, 10)">Select</button>
+        </div>
+      </div>
+
+      <div class="note" style="margin-top:12px;">
+        You can add: “Love reading”, “Career reading”, “Shadow work”, “Mediumship”, etc.
+      </div>
+    </div>
+
+    <div id="bookTabRequest" class="hidden">
+      <div class="form">
+        <div>
+          <label for="service">Service</label>
+          <select id="service">
+            <option value="Tarot Clarity Session|45|30">Tarot Clarity Session — $45 (30m)</option>
+            <option value="Deep Dive Reading|85|60">Deep Dive Reading — $85 (60m)</option>
+            <option value="Instant Aura Audit|20|10">Instant Aura Audit — $20 (10m)</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="delivery">Delivery</label>
+          <select id="delivery">
+            <option value="Google Meet">Google Meet</option>
+            <option value="Phone Call">Phone Call</option>
+            <option value="In Person">In Person</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="name">Name</label>
+          <input id="name" placeholder="Your name" autocomplete="name"/>
+        </div>
+
+        <div>
+          <label for="email">Email</label>
+          <input id="email" placeholder="you@email.com" autocomplete="email"/>
+        </div>
+
+        <div>
+          <label for="date">Preferred Date</label>
+          <input id="date" type="date"/>
+        </div>
+
+        <div>
+          <label for="time">Preferred Time</label>
+          <input id="time" type="time"/>
+        </div>
+
+        <div style="grid-column:1 / -1;">
+          <label for="question">What do you want to focus on?</label>
+          <textarea id="question" placeholder="Ex: love, career, anxiety, next step, spiritual path..."></textarea>
+        </div>
+
+        <div style="grid-column:1 / -1; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn cyan" onclick="submitBooking()">Submit Request</button>
+          <button class="btn" onclick="resetBooking()">Reset</button>
+        </div>
+      </div>
+
+      <div id="bookingMsg" class="note hidden"></div>
+
+      <div class="note" style="margin-top:12px;">
+        Right now this stores requests locally + creates a “copy-ready” confirmation message.
+        To make it fully real bookings: connect this to <b>Calendly</b> or a <b>Google Form</b> or a lightweight backend later.
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Trippy Hippie Shoppe • Built for free hosting • Customize text, products, and links anytime
+  </footer>
+</main>
+
+<script>
+  // -------------------------
+  // Simple router (Home / Shop / Book)
+  // -------------------------
+  const views = {
+    home: document.getElementById('viewHome'),
+    shop: document.getElementById('viewShop'),
+    book: document.getElementById('viewBook'),
+  };
+
+  const routePill = document.getElementById('routePill');
+  const navHome = document.getElementById('navHome');
+  const navShop = document.getElementById('navShop');
+  const navBook = document.getElementById('navBook');
+  const navCart = document.getElementById('navCart');
+
+  navHome.onclick = () => go('#/');
+  navShop.onclick = () => go('#/shop');
+  navBook.onclick = () => go('#/book');
+  navCart.onclick = () => { go('#/shop'); setTimeout(()=> document.getElementById('cartPanel').scrollIntoView({behavior:'smooth'}), 120); };
+
+  function go(hash){ location.hash = hash; }
+
+  function setRoutePill(text){ routePill.textContent = text; }
+
+  function show(viewKey){
+    Object.values(views).forEach(v => v.classList.add('hidden'));
+    views[viewKey].classList.remove('hidden');
+    setRoutePill(viewKey === 'home' ? 'Home' : viewKey[0].toUpperCase() + viewKey.slice(1));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function router(){
+    const h = (location.hash || '#/').replace('#/','');
+    if (h.startsWith('shop')) show('shop');
+    else if (h.startsWith('book')) show('book');
+    else show('home');
+  }
+  window.addEventListener('hashchange', router);
+
+  // -------------------------
+  // Shop data + cart
+  // -------------------------
+  const productGrid = document.getElementById('productGrid');
+  const cartCount = document.getElementById('cartCount');
+  const cartItems = document.getElementById('cartItems');
+  const cartEmpty = document.getElementById('cartEmpty');
+  const cartTotal = document.getElementById('cartTotal');
+  const cartTotalRow = document.getElementById('cartTotalRow');
+
+  const PRODUCTS = [
+    { id:'tarot-01', cat:'tarot',  name:'Shadow Work Tarot Deck', price:39.00, blurb:'A darker, honest deck for clarity and pattern breaking.' },
+    { id:'tarot-02', cat:'tarot',  name:'Pocket Oracle Cards', price:22.00, blurb:'Quick pulls for daily direction and intuition checks.' },
+    { id:'cand-01',  cat:'candles',name:'Protection Candle (Black)', price:18.00, blurb:'For boundaries, banishing, and energetic sealing.' },
+    { id:'cand-02',  cat:'candles',name:'Love & Peace Candle (Rose)', price:18.00, blurb:'Heart-softening, calm, and emotional reset.' },
+    { id:'app-01',   cat:'apparel',name:'Dark Humor Mystic Tee', price:27.00, blurb:'Funny, weird, and spiritually dangerous (in a good way).' },
+    { id:'rit-01',   cat:'ritual', name:'Mini Ritual Kit', price:25.00, blurb:'Salt, herbs, intention card, and a simple ritual flow.' },
+  ];
+
+  const CART_KEY = 'ths_cart_v1';
+  function loadCart(){
+    try { return JSON.parse(localStorage.getItem(CART_KEY) || '{}'); }
+    catch(e){ return {}; }
+  }
+  function saveCart(cart){
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  }
+  function cartQty(cart){
+    return Object.values(cart).reduce((a,b)=>a+b,0);
+  }
+  function cartTotalAmt(cart){
+    let total = 0;
+    for(const [id, qty] of Object.entries(cart)){
+      const p = PRODUCTS.find(x=>x.id===id);
+      if(p) total += p.price * qty;
+    }
+    return total;
+  }
+
+  function addToCart(id){
+    const cart = loadCart();
+    cart[id] = (cart[id] || 0) + 1;
+    saveCart(cart);
+    renderCart();
+  }
+  function decFromCart(id){
+    const cart = loadCart();
+    cart[id] = (cart[id] || 0) - 1;
+    if(cart[id] <= 0) delete cart[id];
+    saveCart(cart);
+    renderCart();
+  }
+  function clearCart(){
+    saveCart({});
+    renderCart();
+  }
+
+  function renderProducts(category='all'){
+    productGrid.innerHTML = '';
+    const list = PRODUCTS.filter(p => category==='all' ? true : p.cat===category);
+    list.forEach(p=>{
+      const el = document.createElement('div');
+      el.className = 'product';
+      el.innerHTML = `
+        <div class="thumb">${p.cat}</div>
+        <h4>${escapeHtml(p.name)}</h4>
+        <div class="row">
+          <span class="small">${escapeHtml(p.blurb)}</span>
+        </div>
+        <div class="row">
+          <span class="price">$${p.price.toFixed(2)}</span>
+          <button class="btn primary">Add to cart</button>
+        </div>
+      `;
+      el.querySelector('button').onclick = ()=> addToCart(p.id);
+      productGrid.appendChild(el);
+    });
+  }
+
+  function renderCart(){
+    const cart = loadCart();
+    cartCount.textContent = cartQty(cart);
+    cartItems.innerHTML = '';
+
+    const entries = Object.entries(cart);
+    if(entries.length === 0){
+      cartEmpty.classList.remove('hidden');
+      cartTotalRow.classList.add('hidden');
+      return;
+    }
+    cartEmpty.classList.add('hidden');
+    cartTotalRow.classList.remove('hidden');
+
+    entries.forEach(([id, qty])=>{
+      const p = PRODUCTS.find(x=>x.id===id);
+      if(!p) return;
+      const row = document.createElement('div');
+      row.className = 'cart-item';
+      row.innerHTML = `
+        <div style="flex:1;">
+          <div style="font-weight:900;">${escapeHtml(p.name)}</div>
+          <div class="small">$${p.price.toFixed(2)} each</div>
+        </div>
+        <div class="qty">
+          <button class="iconbtn" aria-label="decrease">−</button>
+          <div style="min-width:18px; text-align:center; font-weight:900;">${qty}</div>
+          <button class="iconbtn" aria-label="increase">+</button>
+        </div>
+      `;
+      const [decBtn, incBtn] = row.querySelectorAll('button');
+      decBtn.onclick = ()=> decFromCart(id);
+      incBtn.onclick = ()=> addToCart(id);
+      cartItems.appendChild(row);
+    });
+
+    cartTotal.textContent = `$${cartTotalAmt(cart).toFixed(2)}`;
+  }
+
+  function checkout(){
+    const cart = loadCart();
+    if(Object.keys(cart).length === 0){
+      alert('Your cart is empty.');
+      return;
+    }
+
+    // ✅ Replace this with your real checkout link later (Stripe payment link, Shopify, Etsy, Square, etc.)
+    // Example: window.location.href = "https://buy.stripe.com/your_payment_link";
+    alert("Checkout is currently a placeholder.\n\nNext step: replace the checkout() link in code with your Stripe/Shopify/Etsy checkout link.");
+  }
+
+  // Category tabs
+  document.querySelectorAll('[data-cat]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('[data-cat]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProducts(btn.dataset.cat);
+    });
+  });
+
+  // -------------------------
+  // Booking tabs + logic
+  // -------------------------
+  const bookTabs = document.querySelectorAll('[data-booktab]');
+  const tabServices = document.getElementById('bookTabServices');
+  const tabRequest = document.getElementById('bookTabRequest');
+  const serviceSel = document.getElementById('service');
+  const bookingMsg = document.getElementById('bookingMsg');
+
+  bookTabs.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      bookTabs.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const t = btn.dataset.booktab;
+      if(t === 'services'){
+        tabServices.classList.remove('hidden');
+        tabRequest.classList.add('hidden');
+      } else {
+        tabServices.classList.add('hidden');
+        tabRequest.classList.remove('hidden');
+      }
+      bookingMsg.classList.add('hidden');
+    });
+  });
+
+  function prefillService(name, price, minutes){
+    // Switch to request tab and pre-select service
+    bookTabs.forEach(b=>b.classList.remove('active'));
+    document.querySelector('[data-booktab="request"]').classList.add('active');
+    tabServices.classList.add('hidden');
+    tabRequest.classList.remove('hidden');
+
+    const value = `${name}|${price}|${minutes}`;
+    for(const opt of serviceSel.options){
+      if(opt.value === value) serviceSel.value = value;
+    }
+    document.getElementById('date').focus();
+  }
+
+  const BOOK_KEY = 'ths_booking_requests_v1';
+  function loadBookings(){
+    try { return JSON.parse(localStorage.getItem(BOOK_KEY) || '[]'); }
+    catch(e){ return []; }
+  }
+  function saveBookings(list){
+    localStorage.setItem(BOOK_KEY, JSON.stringify(list));
+  }
+
+  function submitBooking(){
+    const [svcName, svcPrice, svcMin] = (serviceSel.value || '').split('|');
+    const delivery = document.getElementById('delivery').value;
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('time').value;
+    const question = document.getElementById('question').value.trim();
+
+    if(!name || !email || !date || !time){
+      bookingMsg.classList.remove('hidden');
+      bookingMsg.classList.remove('success');
+      bookingMsg.textContent = 'Please fill Name, Email, Preferred Date, and Preferred Time.';
+      return;
+    }
+
+    const req = {
+      id: 'req_' + Math.random().toString(16).slice(2),
+      createdAt: new Date().toISOString(),
+      service: svcName,
+      price: Number(svcPrice),
+      minutes: Number(svcMin),
+      delivery,
+      name, email, date, time, question
+    };
+
+    const list = loadBookings();
+    list.unshift(req);
+    saveBookings(list);
+
+    // Confirmation block (copy-ready)
+    const msg =
+`✅ Booking request received!
+
+Service: ${req.service} ($${req.price} / ${req.minutes}m)
+Delivery: ${req.delivery}
+Name: ${req.name}
+Email: ${req.email}
+Preferred: ${req.date} at ${req.time}
+
+Focus:
+${req.question || '(no details provided)'}
+
+Next step:
+Reply to confirm and send your Google Meet link + payment instructions.`;
+
+    bookingMsg.classList.remove('hidden');
+    bookingMsg.classList.add('success');
+    bookingMsg.textContent = msg;
+
+    // Optional: auto-copy to clipboard
+    try{
+      navigator.clipboard.writeText(msg);
+    }catch(e){}
+  }
+
+  function resetBooking(){
+    document.getElementById('name').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('date').value = '';
+    document.getElementById('time').value = '';
+    document.getElementById('question').value = '';
+    bookingMsg.classList.add('hidden');
+  }
+
+  // -------------------------
+  // Helpers
+  // -------------------------
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'","&#039;");
+  }
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Init
+  renderProducts('all');
+  renderCart();
+  router();
+</script>
+
+</body>
+</html>
